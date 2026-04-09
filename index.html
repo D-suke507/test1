@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>品質ヒヤリハット診断</title>
+<style>
+body { font-family: Arial, sans-serif; background:#f5f7fb; margin:0; padding:20px; }
+.container { max-width:900px; margin:auto; }
+.card { background:#fff; padding:24px; border-radius:16px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05);} 
+.badge { display:inline-block; background:#eef3ff; padding:6px 12px; border-radius:999px; font-size:12px; margin-bottom:10px; }
+button { padding:12px 20px; border:none; border-radius:10px; background:#111827; color:#fff; cursor:pointer; }
+.choice { display:block; margin:10px 0; padding:12px; border:1px solid #ddd; border-radius:10px; cursor:pointer; }
+.choice:hover { background:#eef3ff; }
+.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.bar { height:8px; background:#e5e7eb; border-radius:6px; margin:8px 0; }
+.fill { height:8px; background:#111827; border-radius:6px; }
+.small { font-size:12px; color:#555; }
+.progress { height:6px; background:#e5e7eb; border-radius:6px; margin:10px 0; }
+.progress-fill { height:6px; background:#111827; border-radius:6px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="card">
+  <div class="badge">品質ヒヤリハット診断</div>
+  <h2>その判断・やり方・情報は本当に正しいですか？</h2>
+  <p class="small">不正の三要素「動機」「機会」「正当化」から傾向を可視化</p>
+  <input id="name" placeholder="名前">
+  <input id="dept" placeholder="部署">
+  <br><br>
+  <button onclick="start()">診断スタート</button>
+</div>
+
+<div id="quiz" class="card" style="display:none;"></div>
+<div id="result" style="display:none;"></div>
+
+</div>
+
+<script>
+const GAS_WEB_APP_URL = "ここにURL";
+
+const questions = [
+  {cat:"動機", text:"未経験の作業を一人で行う指示", choices:[
+    {text:"そのままやる", type:"motive"},
+    {text:"資料確認", type:"safe"},
+    {text:"相談", type:"safe"},
+    {text:"言いづらくやる", type:"rationalization"}
+  ]},
+  {cat:"正当化", text:"先輩がルールと違う", choices:[
+    {text:"合わせる", type:"rationalization"},
+    {text:"確認", type:"safe"}
+  ]},
+  {cat:"機会", text:"確認を省略できそう", choices:[
+    {text:"省略", type:"opportunity"},
+    {text:"確認", type:"safe"}
+  ]}
+];
+
+let i=0,m=0,o=0,r=0;
+
+function start(){ document.getElementById("quiz").style.display="block"; show(); }
+
+function show(){
+  const q=questions[i];
+  const progress = Math.round((i/questions.length)*100);
+  let html=`<div>Q${i+1}/${questions.length} <span style='float:right'>カテゴリ：${q.cat}</span></div>`;
+  html+=`<div class='progress'><div class='progress-fill' style='width:${progress}%'></div></div>`;
+  html+=`<p>${q.text}</p>`;
+
+  q.choices.forEach(c=>{ html+=`<div class='choice' onclick="ans('${c.type}')">${c.text}</div>`;});
+  document.getElementById("quiz").innerHTML=html;
+}
+
+function ans(t){ if(t==="motive")m++; if(t==="opportunity")o++; if(t==="rationalization")r++; i++; if(i<questions.length){show()}else{finish()}}
+
+function finish(){
+  document.getElementById("quiz").style.display="none";
+  const total = m+o+r || 1;
+
+  const mMax=questions.filter(q=>q.cat==="動機").length;
+  const oMax=questions.filter(q=>q.cat==="機会").length;
+  const rMax=questions.filter(q=>q.cat==="正当化").length;
+
+  let strongest="", msg="";
+  if(m>=o && m>=r){ strongest="動機"; msg="プレッシャーへの対処が重要"; }
+  else if(o>=m && o>=r){ strongest="機会"; msg="ルール・仕組みの見直しが必要"; }
+  else { strongest="正当化"; msg="慣れや思い込みに注意"; }
+
+  document.getElementById("result").style.display="block";
+  document.getElementById("result").innerHTML=`
+  <div class='card'>
+    <div class='badge'>診断結果</div>
+    <h3>あなたの傾向</h3>
+    <p>今回は特に <b>${strongest}</b> の傾向が強く出ました。</p>
+    <div class='card' style='background:#f3f4f6'>${msg}</div>
+  </div>
+
+  <div class='grid'>
+    <div class='card'>
+      <h4>動機 ${m}/${mMax}</h4>
+      <div class='bar'><div class='fill' style='width:${m/mMax*100}%'></div></div>
+      <p class='small'>人間関係や圧力の影響</p>
+      <p class='small'><b>見直しポイント：</b>一度確認する習慣をつける</p>
+    </div>
+    <div class='card'>
+      <h4>機会 ${o}/${oMax}</h4>
+      <div class='bar'><div class='fill' style='width:${o/oMax*100}%'></div></div>
+      <p class='small'>ルール・仕組みの隙</p>
+      <p class='small'><b>見直しポイント：</b>標準化・チェック強化</p>
+    </div>
+    <div class='card'>
+      <h4>正当化 ${r}/${rMax}</h4>
+      <div class='bar'><div class='fill' style='width:${r/rMax*100}%'></div></div>
+      <p class='small'>慣れ・思い込み</p>
+      <p class='small'><b>見直しポイント：</b>根拠を意識する</p>
+    </div>
+  </div>`;
+
+  fetch(GAS_WEB_APP_URL,{method:"POST",body:JSON.stringify({
+    name:document.getElementById("name").value||"未入力",
+    dept:document.getElementById("dept").value||"未入力",
+    motive:m, opportunity:o, rationalization:r, strongest
+  })});
+}
+</script>
+</body>
+</html>
