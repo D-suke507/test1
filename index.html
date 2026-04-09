@@ -2,126 +2,402 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>品質ヒヤリハット診断</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ヒヤリハット診断（完全版）</title>
 <style>
-body { font-family: Arial, sans-serif; background:#f5f7fb; margin:0; padding:20px; }
-.container { max-width:900px; margin:auto; }
-.card { background:#fff; padding:24px; border-radius:16px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05);} 
-.badge { display:inline-block; background:#eef3ff; padding:6px 12px; border-radius:999px; font-size:12px; margin-bottom:10px; }
-button { padding:12px 20px; border:none; border-radius:10px; background:#111827; color:#fff; cursor:pointer; }
-.choice { display:block; margin:10px 0; padding:12px; border:1px solid #ddd; border-radius:10px; cursor:pointer; }
-.choice:hover { background:#eef3ff; }
-.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-.bar { height:8px; background:#e5e7eb; border-radius:6px; margin:8px 0; }
-.fill { height:8px; background:#111827; border-radius:6px; }
-.small { font-size:12px; color:#555; }
-.progress { height:6px; background:#e5e7eb; border-radius:6px; margin:10px 0; }
-.progress-fill { height:6px; background:#111827; border-radius:6px; }
+:root{
+  --bg:#f6f8fc;
+  --bg2:#eef3ff;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --accent:#2563eb;
+  --accent2:#7c3aed;
+  --shadow:0 10px 30px rgba(17,24,39,.08);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:linear-gradient(180deg,var(--bg2) 0%, var(--bg) 220px);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+}
+.container{max-width:980px;margin:0 auto;padding:20px 16px 40px}
+.hero{
+  background:linear-gradient(135deg,#ffffff 0%, #f8fbff 100%);
+  border:1px solid #edf2ff;
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:28px;
+  margin-bottom:18px;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#eef2ff;color:#3730a3;
+  padding:8px 14px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:14px;
+}
+.hero-grid{display:grid;grid-template-columns:1.55fr .95fr;gap:16px;align-items:stretch}
+.hero-card,.side-card,.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+}
+.hero-card{padding:24px}
+.side-card{padding:22px;background:linear-gradient(180deg,#111827 0%, #1f2a44 100%);color:#fff}
+.title{font-size:34px;line-height:1.28;font-weight:800;letter-spacing:-.02em;margin:0 0 12px}
+.lead{font-size:15px;line-height:1.9;color:var(--muted);margin:0}
+.side-title{font-size:14px;color:#cbd5e1;margin-bottom:8px}
+.side-big{font-size:28px;font-weight:800;margin:0 0 12px}
+.side-text{font-size:14px;line-height:1.9;color:#dbe4f0;margin:0}
+.card{padding:24px;margin-bottom:16px}
+.start-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 18px}
+.input-wrap{display:flex;flex-direction:column;gap:6px}
+.label{font-size:13px;font-weight:700;color:#374151}
+input{
+  width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);
+  background:#fff;color:var(--text);font-size:15px;outline:none;
+}
+input:focus{border-color:#c7d2fe;box-shadow:0 0 0 4px rgba(99,102,241,.08)}
+button{
+  width:100%;padding:14px 18px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 8px 20px rgba(79,70,229,.22);
+}
+button:hover{transform:translateY(-1px)}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.quiz-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.quiz-index{font-size:13px;font-weight:700;color:#4b5563}
+.quiz-cat{font-size:13px;font-weight:700;color:#4338ca;background:#eef2ff;padding:6px 10px;border-radius:999px}
+.progress{height:8px;background:#e5e7eb;border-radius:999px;margin:10px 0 18px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:width .25s ease}
+.question-title{font-size:26px;line-height:1.55;font-weight:800;margin:0 0 8px}
+.question-sub{font-size:13px;color:var(--muted);margin:0 0 18px}
+.choice{
+  padding:16px 18px;border:1px solid var(--line);border-radius:16px;margin:10px 0;cursor:pointer;
+  background:#fff;transition:.18s ease;font-size:15px;line-height:1.7;
+}
+.choice:hover{border-color:#93c5fd;background:#f8fbff;transform:translateY(-1px);box-shadow:0 8px 16px rgba(37,99,235,.08)}
+.result-wrap{display:grid;gap:16px}
+.result-hero{
+  background:linear-gradient(135deg,#ffffff 0%, #f8fbff 100%);
+  border:1px solid #e8eeff;border-radius:24px;padding:24px;box-shadow:var(--shadow);text-align:center;
+}
+.result-title{font-size:28px;font-weight:900;letter-spacing:-.02em;margin:0 0 8px}
+.result-rank{font-size:15px;color:#4338ca;font-weight:800;margin:0 0 10px}
+.result-copy{font-size:16px;line-height:1.9;color:#374151;margin:0 auto 14px;max-width:760px}
+.chart-wrap{display:flex;justify-content:center;margin-top:8px}
+.section-title{font-size:18px;font-weight:800;margin:0 0 10px}
+.small{font-size:13px;line-height:1.9;color:var(--muted)}
+.bullets{margin:0;padding-left:20px;color:#374151}
+.bullets li{margin:8px 0;line-height:1.8}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.score-card{padding:20px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:var(--shadow)}
+.score-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.score-name{font-size:18px;font-weight:800}
+.score-val{font-size:14px;color:#4b5563;font-weight:700}
+.bar{height:10px;background:#e5e7eb;border-radius:999px;margin:8px 0 12px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px}
+.retake{max-width:280px}
+@media (max-width: 900px){
+  .hero-grid,.grid{grid-template-columns:1fr}
+}
+@media (max-width: 640px){
+  .container{padding:14px 12px 32px}
+  .hero,.card,.result-hero,.score-card{padding:18px}
+  .title{font-size:28px}
+  .question-title{font-size:21px}
+  .result-title{font-size:24px}
+  .start-form{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 <div class="container">
 
-<div class="card">
-  <div class="badge">品質ヒヤリハットと診断</div>
-  <h2>その判断・やり方・情報は本当に正しいですか？</h2>
-  <p class="small">不正の三要素「動機」「機会」「正当化」から傾向を可視化</p>
-  <input id="name" placeholder="名前">
-  <input id="dept" placeholder="部署">
-  <br><br>
-  <button onclick="start()">診断スタート</button>
+  <div id="startCard" class="hero">
+    <div class="hero-grid">
+      <div class="hero-card">
+        <div class="badge">品質ヒヤリハット診断</div>
+        <h1 class="title">その判断・やり方・情報は<br>本当に正しいですか？</h1>
+        <p class="lead">不正の三要素である「動機」「機会」「正当化」の観点から、現場で起こりやすい判断のクセを可視化する診断です。正解を探すのではなく、普段の自分に近い行動を直感で選んでください。</p>
+        <div class="start-form">
+          <div class="input-wrap">
+            <label class="label" for="name">名前</label>
+            <input id="name" placeholder="例：山田 太郎">
+          </div>
+          <div class="input-wrap">
+            <label class="label" for="dept">部署</label>
+            <input id="dept" placeholder="例：品質管理グループ">
+          </div>
+        </div>
+        <button id="startBtn" onclick="start()">診断スタート</button>
+      </div>
+      <div class="side-card">
+        <div class="side-title">診断内容</div>
+        <div class="side-big">全 9 問</div>
+        <p class="side-text">・1問ずつ直感で回答<br>・最後にタイプと傾向を表示<br>・回答はスコア化され、分析用データとして蓄積</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="quiz" class="card" style="display:none"></div>
+  <div id="result" style="display:none"></div>
+
 </div>
-
-<div id="quiz" class="card" style="display:none;"></div>
-<div id="result" style="display:none;"></div>
-
-</div>
-
 <script>
 const GAS_WEB_APP_URL = "ここにURL";
 
 const questions = [
-  {cat:"動機", text:"未経験の作業を一人で行う指示", choices:[
-    {text:"そのままやる", type:"motive"},
-    {text:"資料確認", type:"safe"},
-    {text:"相談", type:"safe"},
-    {text:"言いづらくやる", type:"rationalization"}
+  {cat:"動機",text:"未経験の作業を一人で行うよう指示されました。あなたはどうしますか？",choices:[
+    {text:"そのまま指示に従って作業を進める",type:"motive",w:2},
+    {text:"軽く手順を確認して、自分でできそうなら進める",type:"motive",w:1},
+    {text:"手順書や資料をしっかり確認してから判断する",type:"safe",w:0},
+    {text:"不安があるため、上司や先輩に相談する",type:"safe",w:0}
   ]},
-  {cat:"正当化", text:"先輩がルールと違う", choices:[
-    {text:"合わせる", type:"rationalization"},
-    {text:"確認", type:"safe"}
+  {cat:"正当化",text:"上司はAで進めるよう言っているが、先輩は別のやり方で進めようとしています。あなたはどうしますか？",choices:[
+    {text:"先輩の方が現場を分かっていると考え、そのまま合わせる",type:"rationalization",w:2},
+    {text:"その場の空気を見て、とりあえず様子を見る",type:"rationalization",w:1},
+    {text:"どちらが正しいか、手順や指示内容を確認する",type:"safe",w:0},
+    {text:"上司・先輩の双方に確認してから判断する",type:"safe",w:0}
   ]},
-  {cat:"機会", text:"確認を省略できそう", choices:[
-    {text:"省略", type:"opportunity"},
-    {text:"確認", type:"safe"}
+  {cat:"機会",text:"本来はすべて確認すべきだが、時間がなく、一部省略できそうな状況です。あなたはどうしますか？",choices:[
+    {text:"問題なさそうなので省略して進める",type:"opportunity",w:2},
+    {text:"重要そうなところだけ確認して進める",type:"opportunity",w:1},
+    {text:"手間がかかっても、必要な確認はすべて行う",type:"safe",w:0},
+    {text:"迷うため、上司や関係者に判断を仰ぐ",type:"safe",w:0}
+  ]},
+  {cat:"機会",text:"チェック作業の途中で目を離してしまいました。どこから再開しますか？",choices:[
+    {text:"中断した次のところから、そのまま再開する",type:"opportunity",w:2},
+    {text:"覚えている範囲を頼りに、近いところから再開する",type:"opportunity",w:1},
+    {text:"念のため最初からやり直す",type:"safe",w:0},
+    {text:"他の人にも確認してもらいながら再開する",type:"safe",w:0}
+  ]},
+  {cat:"正当化",text:"手順書の内容と、現場で普段行われているやり方が違っています。あなたはどうしますか？",choices:[
+    {text:"現場で定着しているやり方を優先する",type:"rationalization",w:2},
+    {text:"今まで問題が起きていないので、そのままでよいと考える",type:"rationalization",w:1},
+    {text:"まず手順書を確認し、どちらが正しいか見直す",type:"safe",w:0},
+    {text:"必要に応じて改善提案や相談を行う",type:"safe",w:0}
+  ]},
+  {cat:"機会",text:"軽微なミスをしてしまったが、影響は小さそうです。あなたはどうしますか？",choices:[
+    {text:"問題なさそうなので、そのまま進める",type:"opportunity",w:2},
+    {text:"後で直せると考え、今は作業を優先する",type:"opportunity",w:1},
+    {text:"小さくてもミスとして報告・修正する",type:"safe",w:0},
+    {text:"念のため周囲や上司に確認してから判断する",type:"safe",w:0}
+  ]},
+  {cat:"動機",text:"上司の指示と、目の前にいる先輩の進め方が食い違っています。あなたはどうしますか？",choices:[
+    {text:"その場の空気を優先して、先輩に合わせる",type:"motive",w:2},
+    {text:"ひとまず様子を見て、強く言われた方に従う",type:"motive",w:1},
+    {text:"上司の指示内容を確認してから進める",type:"safe",w:0},
+    {text:"両者に確認し、根拠を明確にしてから行動する",type:"safe",w:0}
+  ]},
+  {cat:"機会",text:"作業中に製品へ軽く接触してしまったが、見た目では問題なさそうです。あなたはどうしますか？",choices:[
+    {text:"外観に異常がなければ、そのままにする",type:"opportunity",w:2},
+    {text:"たぶん大丈夫だと思い、記録せず進める",type:"opportunity",w:1},
+    {text:"念のため報告し、確認してもらう",type:"safe",w:0},
+    {text:"報告に加えて、接触した事実を記録として残す",type:"safe",w:0}
+  ]},
+  {cat:"動機",text:"一緒に作業している人が軽い怪我をしたが、本人は気にしていません。あなたはどうしますか？",choices:[
+    {text:"本人が気にしていないなら、そのままにする",type:"motive",w:2},
+    {text:"少し様子を見るが、自分からは特に動かない",type:"motive",w:1},
+    {text:"体調や状況を確認するため、声をかける",type:"safe",w:0},
+    {text:"必要なら報告や処置を促す",type:"safe",w:0}
   ]}
 ];
 
-let i=0,m=0,o=0,r=0;
+let i=0,m=0,o=0,r=0,score=0,answers=[];
 
-function start(){ document.getElementById("quiz").style.display="block"; show(); }
+function start(){
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('startCard').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  show();
+}
 
 function show(){
   const q=questions[i];
-  const progress = Math.round((i/questions.length)*100);
-  let html=`<div>Q${i+1}/${questions.length} <span style='float:right'>カテゴリ：${q.cat}</span></div>`;
-  html+=`<div class='progress'><div class='progress-fill' style='width:${progress}%'></div></div>`;
-  html+=`<p>${q.text}</p>`;
-
-  q.choices.forEach(c=>{ html+=`<div class='choice' onclick="ans('${c.type}')">${c.text}</div>`;});
-  document.getElementById("quiz").innerHTML=html;
+  const p=Math.round((i/questions.length)*100);
+  let html=`<div class='quiz-head'><div class='quiz-index'>Q${i+1} / ${questions.length}</div><div class='quiz-cat'>${q.cat}</div></div>`;
+  html+=`<div class='progress'><div class='progress-fill' style='width:${p}%'></div></div>`;
+  html+=`<h2 class='question-title'>${q.text}</h2>`;
+  html+=`<p class='question-sub'>最も自分の行動に近いものを選んでください。</p>`;
+  q.choices.forEach(c=>{
+    html+=`<div class='choice' onclick="ans('${c.type}',${c.w},'${c.text.replace(/'/g, "\'")}')">${c.text}</div>`;
+  });
+  document.getElementById('quiz').innerHTML=html;
 }
 
-function ans(t){ if(t==="motive")m++; if(t==="opportunity")o++; if(t==="rationalization")r++; i++; if(i<questions.length){show()}else{finish()}}
+function ans(type,w,text){
+  answers.push({q:i+1,answer:text,type,weight:w});
+  if(type==='motive')m+=w;
+  if(type==='opportunity')o+=w;
+  if(type==='rationalization')r+=w;
+  score+=w;
+  i++;
+  if(i<questions.length){show()}else{finish()}
+}
+
+function drawRadar(){
+  const c=document.getElementById('radar');
+  const ctx=c.getContext('2d');
+  const data=[m,o,r];
+  const labels=['動機','機会','正当化'];
+  const max=18; // 9問 × 最大2点を3要素に配分しても見栄えが安定する固定値
+  const cx=160, cy=160, rad=110;
+  ctx.clearRect(0,0,320,320);
+
+  for(let layer=1; layer<=4; layer++){
+    const rr = rad * (layer/4);
+    ctx.beginPath();
+    for(let j=0;j<3;j++){
+      const a=(Math.PI*2/3*j)-Math.PI/2;
+      const x=cx+rr*Math.cos(a);
+      const y=cy+rr*Math.sin(a);
+      if(j===0){ctx.moveTo(x,y)} else {ctx.lineTo(x,y)}
+    }
+    ctx.closePath();
+    ctx.strokeStyle='#e5e7eb';
+    ctx.stroke();
+  }
+
+  for(let j=0;j<3;j++){
+    const a=(Math.PI*2/3*j)-Math.PI/2;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+rad*Math.cos(a),cy+rad*Math.sin(a));
+    ctx.strokeStyle='#d1d5db';
+    ctx.stroke();
+    ctx.fillStyle='#374151';
+    ctx.font='14px sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(labels[j],cx+(rad+22)*Math.cos(a),cy+(rad+22)*Math.sin(a));
+  }
+
+  ctx.beginPath();
+  data.forEach((v,j)=>{
+    const a=(Math.PI*2/3*j)-Math.PI/2;
+    const rr=rad*(v/max);
+    const x=cx+rr*Math.cos(a);
+    const y=cy+rr*Math.sin(a);
+    if(j===0){ctx.moveTo(x,y)} else {ctx.lineTo(x,y)}
+  });
+  ctx.closePath();
+  ctx.fillStyle='rgba(37,99,235,.22)';
+  ctx.fill();
+  ctx.strokeStyle='#2563eb';
+  ctx.lineWidth=2;
+  ctx.stroke();
+}
 
 function finish(){
-  document.getElementById("quiz").style.display="none";
-  const total = m+o+r || 1;
+  document.getElementById('quiz').style.display='none';
 
-  const mMax=questions.filter(q=>q.cat==="動機").length;
-  const oMax=questions.filter(q=>q.cat==="機会").length;
-  const rMax=questions.filter(q=>q.cat==="正当化").length;
+  let strongest='';
+  let catchCopy='';
+  let detail='';
 
-  let strongest="", msg="";
-  if(m>=o && m>=r){ strongest="動機"; msg="プレッシャーへの対処が重要"; }
-  else if(o>=m && o>=r){ strongest="機会"; msg="ルール・仕組みの見直しが必要"; }
-  else { strongest="正当化"; msg="慣れや思い込みに注意"; }
+  if(m>=o && m>=r){
+    strongest='動機';
+    catchCopy='流されやすい判断タイプ';
+    detail='周囲の空気や人間関係を優先しやすく、本来確認すべき場面でもその場の流れに合わせて判断してしまう傾向があります。';
+  } else if(o>=m && o>=r){
+    strongest='機会';
+    catchCopy='環境依存タイプ';
+    detail='時間不足や確認漏れ、ルールの曖昧さなど、環境に隙があると判断が緩みやすい傾向があります。';
+  } else {
+    strongest='正当化';
+    catchCopy='慣れ優先タイプ';
+    detail='過去の経験や慣れを理由に「このくらいなら大丈夫」と考えやすく、確認や報告の優先度が下がる傾向があります。';
+  }
 
-  document.getElementById("result").style.display="block";
-  document.getElementById("result").innerHTML=`
-  <div class='card'>
-    <div class='badge'>診断結果</div>
-    <h3>あなたの傾向</h3>
-    <p>今回は特に <b>${strongest}</b> の傾向が強く出ました。</p>
-    <div class='card' style='background:#f3f4f6'>${msg}</div>
-  </div>
+  
+  if(score<=6){ rank='S'; rankText='安全意識が高く、慎重な判断ができる状態です。'; }
+  else if(score<=10){ rank='A'; rankText='標準的な判断レベルですが、状況によっては流される余地があります。'; }
+  else { rank='B'; rankText='注意が必要です。焦り・慣れ・環境要因によって逸脱が起こりやすい状態です。'; }
 
-  <div class='grid'>
-    <div class='card'>
-      <h4>動機 ${m}/${mMax}</h4>
-      <div class='bar'><div class='fill' style='width:${m/mMax*100}%'></div></div>
-      <p class='small'>人間関係や圧力の影響</p>
-      <p class='small'><b>見直しポイント：</b>一度確認する習慣をつける</p>
-    </div>
-    <div class='card'>
-      <h4>機会 ${o}/${oMax}</h4>
-      <div class='bar'><div class='fill' style='width:${o/oMax*100}%'></div></div>
-      <p class='small'>ルール・仕組みの隙</p>
-      <p class='small'><b>見直しポイント：</b>標準化・チェック強化</p>
-    </div>
-    <div class='card'>
-      <h4>正当化 ${r}/${rMax}</h4>
-      <div class='bar'><div class='fill' style='width:${r/rMax*100}%'></div></div>
-      <p class='small'>慣れ・思い込み</p>
-      <p class='small'><b>見直しポイント：</b>根拠を意識する</p>
-    </div>
-  </div>`;
+  const motiveMax=6, opportunityMax=8, rationalizationMax=4;
 
-  fetch(GAS_WEB_APP_URL,{method:"POST",body:JSON.stringify({
-    name:document.getElementById("name").value||"未入力",
-    dept:document.getElementById("dept").value||"未入力",
-    motive:m, opportunity:o, rationalization:r, strongest
-  })});
+  document.getElementById('result').style.display='block';
+  document.getElementById('result').innerHTML=`
+    <div class='result-wrap'>
+      <div class='result-hero'>
+        <div class='badge'>診断結果</div>
+        <h2 class='result-title'>あなたは「${strongest}タイプ」です</h2>
+        
+        <p class='result-copy'><b>${catchCopy}</b>。${detail} </p>
+        <div class='chart-wrap'><canvas id='radar' width='320' height='320'></canvas></div>
+      </div>
+
+      <div class='card'>
+        <h3 class='section-title'>■ あなたの傾向の詳細</h3>
+        <p class='small'>
+        ${strongest === '動機' ? 'あなたは「間違っているかもしれない」と感じても、その場の人間関係や圧力を優先してしまう可能性があります。特に、上司や先輩が関わる場面では、違和感があっても止めづらくなることがあります。' : ''}
+        ${strongest === '機会' ? 'あなたは「確認不足でも進められてしまう」「ルールが曖昧でも作業できてしまう」といった環境要因の影響を受けやすい傾向があります。仕組みの隙が判断の甘さにつながりやすいタイプです。' : ''}
+        ${strongest === '正当化' ? 'あなたは「過去に問題がなかった」「このくらいは大丈夫」という感覚で、自分の判断を補強しやすい傾向があります。慣れや経験が強みになる一方で、確認不足の温床になることがあります。' : ''}
+        </p>
+      </div>
+
+      <div class='card'>
+        <h3 class='section-title'>■ よくあるリスクパターン</h3>
+        <ul class='bullets'>
+          <li>違和感があっても、その場の流れを優先してしまう</li>
+          <li>「いつもこうしている」を理由に確認を省略してしまう</li>
+          <li>軽微だと判断して報告や記録を後回しにしてしまう</li>
+        </ul>
+      </div>
+
+      <div class='card'>
+        <h3 class='section-title'>■ 改善アクション（具体）</h3>
+        <ul class='bullets'>
+          <li>迷ったときは、まず一度止めて確認する</li>
+          <li>口頭の慣習より、手順書や記録を優先する</li>
+          <li>例外対応はその場で終わらせず、共有・標準化する</li>
+          <li>小さな違和感でも、報告や相談につなげる</li>
+        </ul>
+      </div>
+
+      <div class='grid'>
+        <div class='score-card'>
+          <div class='score-head'><div class='score-name'>動機</div><div class='score-val'>${m} / ${motiveMax}</div></div>
+          <div class='bar'><div class='fill' style='width:${Math.min((m/motiveMax)*100,100)}%'></div></div>
+          <div class='small'>人間関係や空気、プレッシャーによって判断がぶれやすい傾向。</div>
+        </div>
+        <div class='score-card'>
+          <div class='score-head'><div class='score-name'>機会</div><div class='score-val'>${o} / ${opportunityMax}</div></div>
+          <div class='bar'><div class='fill' style='width:${Math.min((o/opportunityMax)*100,100)}%'></div></div>
+          <div class='small'>確認不足、仕組みの曖昧さ、時間制約など環境面の影響を受けやすい傾向。</div>
+        </div>
+        <div class='score-card'>
+          <div class='score-head'><div class='score-name'>正当化</div><div class='score-val'>${r} / ${rationalizationMax}</div></div>
+          <div class='bar'><div class='fill' style='width:${Math.min((r/rationalizationMax)*100,100)}%'></div></div>
+          <div class='small'>慣れや経験を根拠に、自分の判断を「大丈夫」と補強しやすい傾向。</div>
+        </div>
+      </div>
+
+      <div class='card'>
+        <h3 class='section-title'>■ 次に活かすポイント</h3>
+        <p class='small'>この結果は、良い・悪いを決めるものではありません。今の自分がどこで判断を崩しやすいかを知り、次の行動を変えるためのヒントです。特にスコアが高かった要素は、現場でのミスや見落としの起点になりやすいため、意識的に対策することで再発防止につながります。</p>
+        
+      </div>
+    </div>`;
+
+  drawRadar();
+
+  fetch(GAS_WEB_APP_URL, {
+    method:'POST',
+    body:JSON.stringify({
+      name:document.getElementById('name').value || '未入力',
+      dept:document.getElementById('dept').value || '未入力',
+      motive:m,
+      opportunity:o,
+      rationalization:r,
+      strongest,
+      score,
+      
+      answers
+    })
+  });
 }
 </script>
 </body>
