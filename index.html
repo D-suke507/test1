@@ -150,63 +150,69 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz2VmC1usNviqEUEveCbWKzsWbrbe0-37vL8VAgoxvXElIIkiqyVHa1ZeQlJbZ9clnF/exec";
 
 const questions = [
-  {cat:"動機",text:"未経験の作業を一人で行うよう指示されました。あなたはどうしますか？",choices:[
-    {text:"そのまま指示に従って作業を進める",type:"motive",w:2},
-    {text:"軽く手順を確認して、自分でできそうなら進める",type:"motive",w:1},
-    {text:"手順書や資料をしっかり確認してから判断する",type:"safe",w:0},
-    {text:"不安があるため、上司や先輩に相談する",type:"safe",w:0}
+  {cat:"動機",text:"自信がない作業を1人で行う必要があるとき、あなたはどうしますか？",choices:[
+    {text:"そのまま自分の判断で進める",type:"motive",w:2},
+    {text:"確認できる相手や時間がないため、そのまま進める",type:"opportunity",w:2},
+    {text:"過去のやり方を参考にして進める",type:"rationalization",w:2}
   ]},
-  {cat:"正当化",text:"上司はAで進めるよう言っているが、先輩は別のやり方で進めようとしています。あなたはどうしますか？",choices:[
-    {text:"先輩の方が現場を分かっていると考え、そのまま合わせる",type:"rationalization",w:2},
-    {text:"その場の空気を見て、とりあえず様子を見る",type:"rationalization",w:1},
-    {text:"どちらが正しいか、手順や指示内容を確認する",type:"safe",w:0},
-    {text:"上司・先輩の双方に確認してから判断する",type:"safe",w:0}
+  {cat:"動機",text:"上司はAで進めるよう言っていますが、一緒に作業している先輩はBのやり方で進めようとしています。あなたはどうしますか？",choices:[
+    {text:"上司の指示（A）が正しいと思うが、言いづらく先輩に合わせる",type:"motive",w:2},
+    {text:"確認する場がなく、その場の流れでBに従う",type:"opportunity",w:2},
+    {text:"先輩の方が現場を分かっていると考え、Bで進める",type:"rationalization",w:2}
   ]},
-  {cat:"機会",text:"本来はすべて確認すべきだが、時間がなく、一部省略できそうな状況です。あなたはどうしますか？",choices:[
-    {text:"問題なさそうなので省略して進める",type:"opportunity",w:2},
-    {text:"重要そうなところだけ確認して進める",type:"opportunity",w:1},
-    {text:"手間がかかっても、必要な確認はすべて行う",type:"safe",w:0},
-    {text:"迷うため、上司や関係者に判断を仰ぐ",type:"safe",w:0}
+  {cat:"動機",text:"上司・先輩はAで進めるよう言っていますが、自分はBのやり方が正しいと感じています。あなたはどうしますか？",choices:[
+    {text:"自分の判断でBで進める",type:"motive",w:2},
+    {text:"その場で確認手段がなく、Bで進める",type:"opportunity",w:2},
+    {text:"自分の考えの方が合理的だと思い、Bで進める",type:"rationalization",w:2}
   ]},
-  {cat:"機会",text:"チェック作業の途中で目を離してしまいました。どこから再開しますか？",choices:[
-    {text:"中断した次のところから、そのまま再開する",type:"opportunity",w:2},
-    {text:"覚えている範囲を頼りに、近いところから再開する",type:"opportunity",w:1},
-    {text:"念のため最初からやり直す",type:"safe",w:0},
-    {text:"他の人にも確認してもらいながら再開する",type:"safe",w:0}
+  {cat:"動機",text:"上司・先輩が、廊下で歩きスマホをしています。あなたはどうしますか？",choices:[
+    {text:"注意すべきと思うが、言いづらく何もしない",type:"motive",w:2},
+    {text:"誰にも指摘されない雰囲気なので、そのままにする",type:"opportunity",w:2},
+    {text:"自分も問題ないと感じる",type:"rationalization",w:2}
   ]},
-  {cat:"正当化",text:"手順書の内容と、現場で普段行われているやり方が違っています。あなたはどうしますか？",choices:[
-    {text:"現場で定着しているやり方を優先する",type:"rationalization",w:2},
-    {text:"今まで問題が起きていないので、そのままでよいと考える",type:"rationalization",w:1},
-    {text:"まず手順書を確認し、どちらが正しいか見直す",type:"safe",w:0},
-    {text:"必要に応じて改善提案や相談を行う",type:"safe",w:0}
+  {cat:"機会",text:"本来はすべてを確認すべきですが、時間がなく、一部省略できそうな状況です。あなたはどうしますか？",choices:[
+    {text:"時間に追われて省略する",type:"motive",w:2},
+    {text:"確認不足でも進められる環境なので、省略する",type:"opportunity",w:2},
+    {text:"過去の実績や経験から問題ないと判断して進める",type:"rationalization",w:2}
   ]},
-  {cat:"機会",text:"軽微なミスをしてしまったが、影響は小さそうです。あなたはどうしますか？",choices:[
-    {text:"問題なさそうなので、そのまま進める",type:"opportunity",w:2},
-    {text:"後で直せると考え、今は作業を優先する",type:"opportunity",w:1},
-    {text:"小さくてもミスとして報告・修正する",type:"safe",w:0},
-    {text:"念のため周囲や上司に確認してから判断する",type:"safe",w:0}
+  {cat:"動機",text:"未経験の作業を一人で行うよう上司から指示されました。あなたはどうしますか？",choices:[
+    {text:"不安はあるが、言いづらく一人で作業する",type:"motive",w:2},
+    {text:"支援や同席がないため、一人で作業する",type:"opportunity",w:2},
+    {text:"少し確認すれば大丈夫だと考え、一人で作業する",type:"rationalization",w:2}
   ]},
-  {cat:"動機",text:"上司の指示と、目の前にいる先輩の進め方が食い違っています。あなたはどうしますか？",choices:[
-    {text:"その場の空気を優先して、先輩に合わせる",type:"motive",w:2},
-    {text:"ひとまず様子を見て、強く言われた方に従う",type:"motive",w:1},
-    {text:"上司の指示内容を確認してから進める",type:"safe",w:0},
-    {text:"両者に確認し、根拠を明確にしてから行動する",type:"safe",w:0}
+  {cat:"機会",text:"作業中に製品へ軽く接触してしまいましたが見た目では問題なさそうです。あなたはどうしますか？",choices:[
+    {text:"本来は報告すべきと思うが、言いづらくそのままにする",type:"motive",w:2},
+    {text:"報告しなくても見つかりにくいので、そのままにする",type:"opportunity",w:2},
+    {text:"特に問題なさそうなので、何もしない",type:"rationalization",w:2}
   ]},
-  {cat:"機会",text:"作業中に製品へ軽く接触してしまったが、見た目では問題なさそうです。あなたはどうしますか？",choices:[
-    {text:"外観に異常がなければ、そのままにする",type:"opportunity",w:2},
-    {text:"たぶん大丈夫だと思い、記録せず進める",type:"opportunity",w:1},
-    {text:"念のため報告し、確認してもらう",type:"safe",w:0},
-    {text:"報告に加えて、接触した事実を記録として残す",type:"safe",w:0}
+  {cat:"機会",text:"作業中に製品へ軽く接触したあと、そのままにしている人を目撃しました。あなたはどうしますか？",choices:[
+    {text:"本来は対応すべきだと思うが、言いづらく何もしない",type:"motive",w:2},
+    {text:"関わりたくないので何もしない",type:"opportunity",w:2},
+    {text:"本人が対応すると思い、そのままにする",type:"rationalization",w:2}
   ]},
-  {cat:"動機",text:"一緒に作業している人が軽い怪我をしたが、本人は気にしていません。あなたはどうしますか？",choices:[
-    {text:"本人が気にしていないなら、そのままにする",type:"motive",w:2},
-    {text:"少し様子を見るが、自分からは特に動かない",type:"motive",w:1},
-    {text:"体調や状況を確認するため、声をかける",type:"safe",w:0},
-    {text:"必要なら報告や処置を促す",type:"safe",w:0}
+  {cat:"機会",text:"作業中に、自分しか気づかない程度の軽い怪我をしました。あなたはどうしますか？",choices:[
+    {text:"本来は報告すべきと思うが、言いづらく報告しない",type:"motive",w:2},
+    {text:"報告しなくても作業を続けられるので、そのままにする",type:"opportunity",w:2},
+    {text:"軽症のため、報告せずにそのまま作業を続ける",type:"rationalization",w:2}
+  ]},
+  {cat:"動機",text:"一緒に作業している人が軽い怪我をしましたが、本人は気にしていません。あなたはどうしますか？",choices:[
+    {text:"本来は報告を促すべきだと思うが、言いづらく何もしない",type:"motive",w:2},
+    {text:"関わりたくないので何もしない",type:"opportunity",w:2},
+    {text:"本人が気づいていると思い、そのままにする",type:"rationalization",w:2}
+  ]},
+  {cat:"正当化",text:"10個のチェック項目があり、目視で5つ目まで確認したところで一度目を離しました。あなたはどこから再開しますか？",choices:[
+    {text:"時間を優先して6つ目から再開する",type:"motive",w:2},
+    {text:"中断してもチェックを続けられる環境なので、そのまま続ける",type:"opportunity",w:2},
+    {text:"覚えている範囲で続きから再開する",type:"rationalization",w:2}
+  ]},
+  {cat:"機会",text:"普段行っている作業ですが、手順書やルールとして標準化されていません。あなたはどうしますか？",choices:[
+    {text:"本来は必要だと思うが、言い出せずそのままにする",type:"motive",w:2},
+    {text:"標準化がなくても作業できてしまうので、そのままにする",type:"opportunity",w:2},
+    {text:"周囲のやり方に合わせれば問題ないと考える",type:"rationalization",w:2}
   ]}
 ];
 
-let i=0,m=0,o=0,r=0,score=0,answers=[];
+let i=0,m=0,o=0,r=0,answers=[];
 
 function start(){
   document.getElementById('startBtn').disabled = true;
@@ -229,11 +235,10 @@ function show(){
 }
 
 function ans(type,w,text){
-  answers.push({q:i+1,answer:text,type,weight:w});
-  if(type==='motive')m+=w;
-  if(type==='opportunity')o+=w;
-  if(type==='rationalization')r+=w;
-  score+=w;
+  answers.push({q:i+1,answer:text,type});
+  if(type==='motive')m+=1;
+  if(type==='opportunity')o+=1;
+  if(type==='rationalization')r+=1;
   i++;
   if(i<questions.length){show()}else{finish()}
 }
@@ -243,7 +248,7 @@ function drawRadar(){
   const ctx=c.getContext('2d');
   const data=[m,o,r];
   const labels=['動機','機会','正当化'];
-  const max=18; // 9問 × 最大2点を3要素に配分しても見栄えが安定する固定値
+  const max=questions.length;
   const cx=160, cy=160, rad=110;
   ctx.clearRect(0,0,320,320);
 
@@ -311,12 +316,7 @@ function finish(){
     detail='過去の経験や慣れを理由に「このくらいなら大丈夫」と考えやすく、確認や報告の優先度が下がる傾向があります。';
   }
 
-  
-  if(score<=6){ rank='S'; rankText='安全意識が高く、慎重な判断ができる状態です。'; }
-  else if(score<=10){ rank='A'; rankText='標準的な判断レベルですが、状況によっては流される余地があります。'; }
-  else { rank='B'; rankText='注意が必要です。焦り・慣れ・環境要因によって逸脱が起こりやすい状態です。'; }
-
-  const motiveMax=6, opportunityMax=8, rationalizationMax=4;
+  const totalQuestions = questions.length;
 
   document.getElementById('result').style.display='block';
   document.getElementById('result').innerHTML=`
@@ -359,18 +359,18 @@ function finish(){
 
       <div class='grid'>
         <div class='score-card'>
-          <div class='score-head'><div class='score-name'>動機</div><div class='score-val'>${m} / ${motiveMax}</div></div>
-          <div class='bar'><div class='fill' style='width:${Math.min((m/motiveMax)*100,100)}%'></div></div>
+          <div class='score-head'><div class='score-name'>動機</div><div class='score-val'>${m} / ${totalQuestions}</div></div>
+          <div class='bar'><div class='fill' style='width:${Math.min((m/totalQuestions)*100,100)}%'></div></div>
           <div class='small'>人間関係や空気、プレッシャーによって判断がぶれやすい傾向。</div>
         </div>
         <div class='score-card'>
-          <div class='score-head'><div class='score-name'>機会</div><div class='score-val'>${o} / ${opportunityMax}</div></div>
-          <div class='bar'><div class='fill' style='width:${Math.min((o/opportunityMax)*100,100)}%'></div></div>
+          <div class='score-head'><div class='score-name'>機会</div><div class='score-val'>${o} / ${totalQuestions}</div></div>
+          <div class='bar'><div class='fill' style='width:${Math.min((o/totalQuestions)*100,100)}%'></div></div>
           <div class='small'>確認不足、仕組みの曖昧さ、時間制約など環境面の影響を受けやすい傾向。</div>
         </div>
         <div class='score-card'>
-          <div class='score-head'><div class='score-name'>正当化</div><div class='score-val'>${r} / ${rationalizationMax}</div></div>
-          <div class='bar'><div class='fill' style='width:${Math.min((r/rationalizationMax)*100,100)}%'></div></div>
+          <div class='score-head'><div class='score-name'>正当化</div><div class='score-val'>${r} / ${totalQuestions}</div></div>
+          <div class='bar'><div class='fill' style='width:${Math.min((r/totalQuestions)*100,100)}%'></div></div>
           <div class='small'>慣れや経験を根拠に、自分の判断を「大丈夫」と補強しやすい傾向。</div>
         </div>
       </div>
@@ -393,8 +393,6 @@ function finish(){
       opportunity:o,
       rationalization:r,
       strongest,
-      score,
-      
       answers
     })
   });
