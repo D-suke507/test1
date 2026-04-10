@@ -224,7 +224,7 @@ function start(){
 function show(){
   const q=questions[i];
   const p=Math.round((i/questions.length)*100);
-  let html=`<div class='quiz-head'><div class='quiz-index'>Q${i+1} / ${questions.length}</div><div class='quiz-cat'>${q.cat}</div></div>`;
+  let html=`<div class='quiz-head'><div class='quiz-index'>Q${i+1} / ${questions.length}</div></div>`;
   html+=`<div class='progress'><div class='progress-fill' style='width:${p}%'></div></div>`;
   html+=`<h2 class='question-title'>${q.text}</h2>`;
   html+=`<p class='question-sub'>最も自分の行動に近いものを選んでください。</p>`;
