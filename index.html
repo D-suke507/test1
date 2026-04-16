@@ -121,7 +121,8 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
       <div class="hero-card">
         <div class="badge">品質ヒヤリハット診断</div>
         <h1 class="title">その判断・やり方・情報は<br>本当に正しいですか？</h1>
-        <p class="lead">不正の三要素である「動機」「機会」「正当化」の観点から、現場で起こりやすい判断のクセを可視化する診断です。正解を探すのではなく、普段の自分に近い行動を直感で選んでください。</p>
+        <p class="lead">不正の三要素である「動機」「機会」「正当化」の観点から、現場で起こりやすい判断のクセを可視化する診断です。<br>
+選択する回答は正解がありません。不正するなら、どの不正か、最も自分の行動に近いものを直感で選んでください。</p>
         <div class="start-form">
           <div class="input-wrap">
             <label class="label" for="name">名前</label>
@@ -227,7 +228,8 @@ function show(){
   let html=`<div class='quiz-head'><div class='quiz-index'>Q${i+1} / ${questions.length}</div></div>`;
   html+=`<div class='progress'><div class='progress-fill' style='width:${p}%'></div></div>`;
   html+=`<h2 class='question-title'>${q.text}</h2>`;
-  html+=`<p class='question-sub'>最も自分の行動に近いものを選んでください。</p>`;
+  html+=`<p class='question-sub'>選択する回答は正解がありません。<br>
+不正するなら、どの不正か、最も自分の行動に近いものを直感で選んでください。</p>`;
   q.choices.forEach(c=>{
     html+=`<div class='choice' onclick="ans('${c.type}',${c.w},'${c.text.replace(/'/g, "\'")}')">${c.text}</div>`;
   });
