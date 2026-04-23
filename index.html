@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ヒヤリハット診断（完全版）</title>
+<title>宮崎日機装/品質ヒヤリ心理テスト</title>
 <style>
 :root{
   --bg:#f6f8fc;
@@ -52,14 +52,14 @@ body{
 .side-big{font-size:28px;font-weight:800;margin:0 0 12px}
 .side-text{font-size:14px;line-height:1.9;color:#dbe4f0;margin:0}
 .card{padding:24px;margin-bottom:16px}
-.start-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 18px}
+.start-form{display:grid;grid-template-columns:1fr;gap:12px;margin:16px 0 18px}
 .input-wrap{display:flex;flex-direction:column;gap:6px}
 .label{font-size:13px;font-weight:700;color:#374151}
-input{
+input,select{
   width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);
   background:#fff;color:var(--text);font-size:15px;outline:none;
 }
-input:focus{border-color:#c7d2fe;box-shadow:0 0 0 4px rgba(99,102,241,.08)}
+input:focus,select:focus{border-color:#c7d2fe;box-shadow:0 0 0 4px rgba(99,102,241,.08)}
 button{
   width:100%;padding:14px 18px;border:none;border-radius:14px;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
@@ -69,7 +69,6 @@ button:hover{transform:translateY(-1px)}
 button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 .quiz-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
 .quiz-index{font-size:13px;font-weight:700;color:#4b5563}
-.quiz-cat{font-size:13px;font-weight:700;color:#4338ca;background:#eef2ff;padding:6px 10px;border-radius:999px}
 .progress{height:8px;background:#e5e7eb;border-radius:999px;margin:10px 0 18px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:width .25s ease}
 .question-title{font-size:26px;line-height:1.55;font-weight:800;margin:0 0 8px}
@@ -85,7 +84,6 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
   border:1px solid #e8eeff;border-radius:24px;padding:24px;box-shadow:var(--shadow);text-align:center;
 }
 .result-title{font-size:28px;font-weight:900;letter-spacing:-.02em;margin:0 0 8px}
-.result-rank{font-size:15px;color:#4338ca;font-weight:800;margin:0 0 10px}
 .result-copy{font-size:16px;line-height:1.9;color:#374151;margin:0 auto 14px;max-width:760px}
 .chart-wrap{display:flex;justify-content:center;margin-top:8px}
 .section-title{font-size:18px;font-weight:800;margin:0 0 10px}
@@ -99,7 +97,6 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 .score-val{font-size:14px;color:#4b5563;font-weight:700}
 .bar{height:10px;background:#e5e7eb;border-radius:999px;margin:8px 0 12px;overflow:hidden}
 .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px}
-.retake{max-width:280px}
 @media (max-width: 900px){
   .hero-grid,.grid{grid-template-columns:1fr}
 }
@@ -109,7 +106,6 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
   .title{font-size:28px}
   .question-title{font-size:21px}
   .result-title{font-size:24px}
-  .start-form{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -119,26 +115,34 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
   <div id="startCard" class="hero">
     <div class="hero-grid">
       <div class="hero-card">
-        <div class="badge">品質ヒヤリハット診断</div>
+        <div class="badge">宮崎日機装/品質ヒヤリ心理テスト</div>
         <h1 class="title">その判断・やり方・情報は<br>本当に正しいですか？</h1>
         <p class="lead">不正の三要素である「動機」「機会」「正当化」の観点から、現場で起こりやすい判断のクセを可視化する診断です。<br>
-選択する回答は正解がありません。不正するなら、どの不正か、最も自分の行動に近いものを直感で選んでください。</p>
+          選択する回答は正解がありません。<br>
+          <strong>追い込まれた状況で・・・</strong><br>
+          不正するなら、どの不正か、最も自分の行動に近いものを直感で選んでください。</p>
         <div class="start-form">
           <div class="input-wrap">
-            <label class="label" for="name">名前</label>
-            <input id="name" placeholder="例：山田 太郎">
-          </div>
-          <div class="input-wrap">
             <label class="label" for="dept">部署</label>
-            <input id="dept" placeholder="例：品質管理グループ">
+            <select id="dept">
+              <option value="">選択してください</option>
+              <option>EN00 - EN01</option>
+              <option>EN1（生産技術部）</option>
+              <option>EN2（製造第一部）</option>
+              <option>EN3（品質管理部）</option>
+              <option>EN4（製造第二部）</option>
+              <option>EN5（検査部）</option>
+              <option>EN6（生産管理部）</option>
+              <option>EN7（技術部）</option>
+            </select>
           </div>
         </div>
         <button id="startBtn" onclick="start()">診断スタート</button>
       </div>
       <div class="side-card">
         <div class="side-title">診断内容</div>
-        <div class="side-big">全 9 問</div>
-        <p class="side-text">・1問ずつ直感で回答<br>・最後にタイプと傾向を表示<br>・回答はスコア化され、分析用データとして蓄積</p>
+        <div class="side-big">全 15 問</div>
+        <p class="side-text">・1問ずつ直感で回答してください<br>・最後にタイプと傾向を表示します</p>
       </div>
     </div>
   </div>
@@ -148,74 +152,154 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 
 </div>
 <script>
-const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz2VmC1usNviqEUEveCbWKzsWbrbe0-37vL8VAgoxvXElIIkiqyVHa1ZeQlJbZ9clnF/exec";
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxi433UVuiFaHle8KloJWSjDCqGCoWbOVUueklquo4cqf8z0yy4VWjLgqCXc1efXe5P/exec";
 
 const questions = [
-  {cat:"動機",text:"自信がない作業を1人で行う必要があるとき、あなたはどうしますか？",choices:[
-    {text:"そのまま自分の判断で進める",type:"motive",w:2},
-    {text:"確認できる相手や時間がないため、そのまま進める",type:"opportunity",w:2},
-    {text:"過去のやり方を参考にして進める",type:"rationalization",w:2}
-  ]},
-  {cat:"動機",text:"上司はAで進めるよう言っていますが、一緒に作業している先輩はBのやり方で進めようとしています。あなたはどうしますか？",choices:[
-    {text:"上司の指示（A）が正しいと思うが、言いづらく先輩に合わせる",type:"motive",w:2},
-    {text:"確認する場がなく、その場の流れでBに従う",type:"opportunity",w:2},
-    {text:"先輩の方が現場を分かっていると考え、Bで進める",type:"rationalization",w:2}
-  ]},
-  {cat:"動機",text:"上司・先輩はAで進めるよう言っていますが、自分はBのやり方が正しいと感じています。あなたはどうしますか？",choices:[
-    {text:"自分の判断でBで進める",type:"motive",w:2},
-    {text:"その場で確認手段がなく、Bで進める",type:"opportunity",w:2},
-    {text:"自分の考えの方が合理的だと思い、Bで進める",type:"rationalization",w:2}
-  ]},
-  {cat:"動機",text:"上司・先輩が、廊下で歩きスマホをしています。あなたはどうしますか？",choices:[
-    {text:"注意すべきと思うが、言いづらく何もしない",type:"motive",w:2},
-    {text:"誰にも指摘されない雰囲気なので、そのままにする",type:"opportunity",w:2},
-    {text:"自分も問題ないと感じる",type:"rationalization",w:2}
-  ]},
-  {cat:"機会",text:"本来はすべてを確認すべきですが、時間がなく、一部省略できそうな状況です。あなたはどうしますか？",choices:[
-    {text:"時間に追われて省略する",type:"motive",w:2},
-    {text:"確認不足でも進められる環境なので、省略する",type:"opportunity",w:2},
-    {text:"過去の実績や経験から問題ないと判断して進める",type:"rationalization",w:2}
-  ]},
-  {cat:"動機",text:"未経験の作業を一人で行うよう上司から指示されました。あなたはどうしますか？",choices:[
-    {text:"不安はあるが、言いづらく一人で作業する",type:"motive",w:2},
-    {text:"支援や同席がないため、一人で作業する",type:"opportunity",w:2},
-    {text:"少し確認すれば大丈夫だと考え、一人で作業する",type:"rationalization",w:2}
-  ]},
-  {cat:"機会",text:"作業中に製品へ軽く接触してしまいましたが見た目では問題なさそうです。あなたはどうしますか？",choices:[
-    {text:"本来は報告すべきと思うが、言いづらくそのままにする",type:"motive",w:2},
-    {text:"報告しなくても見つかりにくいので、そのままにする",type:"opportunity",w:2},
-    {text:"特に問題なさそうなので、何もしない",type:"rationalization",w:2}
-  ]},
-  {cat:"機会",text:"作業中に製品へ軽く接触したあと、そのままにしている人を目撃しました。あなたはどうしますか？",choices:[
-    {text:"本来は対応すべきだと思うが、言いづらく何もしない",type:"motive",w:2},
-    {text:"関わりたくないので何もしない",type:"opportunity",w:2},
-    {text:"本人が対応すると思い、そのままにする",type:"rationalization",w:2}
-  ]},
-  {cat:"機会",text:"作業中に、自分しか気づかない程度の軽い怪我をしました。あなたはどうしますか？",choices:[
-    {text:"本来は報告すべきと思うが、言いづらく報告しない",type:"motive",w:2},
-    {text:"報告しなくても作業を続けられるので、そのままにする",type:"opportunity",w:2},
-    {text:"軽症のため、報告せずにそのまま作業を続ける",type:"rationalization",w:2}
-  ]},
-  {cat:"動機",text:"一緒に作業している人が軽い怪我をしましたが、本人は気にしていません。あなたはどうしますか？",choices:[
-    {text:"本来は報告を促すべきだと思うが、言いづらく何もしない",type:"motive",w:2},
-    {text:"関わりたくないので何もしない",type:"opportunity",w:2},
-    {text:"本人が気づいていると思い、そのままにする",type:"rationalization",w:2}
-  ]},
-  {cat:"正当化",text:"10個のチェック項目があり、目視で5つ目まで確認したところで一度目を離しました。あなたはどこから再開しますか？",choices:[
-    {text:"時間を優先して6つ目から再開する",type:"motive",w:2},
-    {text:"中断してもチェックを続けられる環境なので、そのまま続ける",type:"opportunity",w:2},
-    {text:"覚えている範囲で続きから再開する",type:"rationalization",w:2}
-  ]},
-  {cat:"機会",text:"普段行っている作業ですが、手順書やルールとして標準化されていません。あなたはどうしますか？",choices:[
-    {text:"本来は必要だと思うが、言い出せずそのままにする",type:"motive",w:2},
-    {text:"標準化がなくても作業できてしまうので、そのままにする",type:"opportunity",w:2},
-    {text:"周囲のやり方に合わせれば問題ないと考える",type:"rationalization",w:2}
-  ]}
+  {
+    cat:"正当化",
+    text:"少し自信のない作業を、一人で進めることになりました。<br>あなたならどうしますか？",
+    choices:[
+      {text:"自分で大丈夫だと判断して、そのまま進める",type:"rationalization"},
+      {text:"すぐに確認できる人がいないので、そのまま進める",type:"opportunity"},
+      {text:"聞きづらさがあり、相談せずに進める",type:"motive"}
+    ]
+  },
+  {
+    cat:"動機",
+    text:"上司の指示と、一緒に作業している先輩のやり方が食い違っています。<br>あなたならどうしますか？",
+    choices:[
+      {text:"上司の指示が正しいと思っても、言いづらく先輩に合わせる",type:"motive"},
+      {text:"その場で確認する手段がないので、流れに合わせて進める",type:"opportunity"},
+      {text:"先輩の方が現場を分かっていると思い、そのやり方で進める",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"正当化",
+    text:"周囲はAで進めるつもりですが、自分はBの方が良いと感じています。<br>あなたならどうしますか？",
+    choices:[
+      {text:"自分の判断を優先して、Bで進める",type:"rationalization"},
+      {text:"確認できる状況ではないので、そのままBで進める",type:"opportunity"},
+      {text:"言い出しにくく、そのままBで進める",type:"motive"}
+    ]
+  },
+  {
+    cat:"動機",
+    text:"上司や先輩が、明らかにルール違反の行動をしている場面を見ました。<br>あなたならどうしますか？",
+    choices:[
+      {text:"気になるが、言いづらくて何もしない",type:"motive"},
+      {text:"誰も何も言わないので、そのままにする",type:"opportunity"},
+      {text:"その程度なら問題ないと思う",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"機会",
+    text:"本来は確認が必要ですが、忙しくて一部を省略できそうです。<br>あなたならどうしますか？",
+    choices:[
+      {text:"焦っていて、そのまま省略して進める",type:"motive"},
+      {text:"省略しても進められる状況なので、そのまま進める",type:"opportunity"},
+      {text:"これまで問題がなかったので、省略しても大丈夫だと思う",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"正当化",
+    text:"内容に少し不安があるまま、作業を進める必要があります。<br>あなたならどうしますか？",
+    choices:[
+      {text:"自分の中で問題ないと判断して、そのまま進める",type:"rationalization"},
+      {text:"確認できる状況ではないので、そのまま進める",type:"opportunity"},
+      {text:"確認したいが言い出しづらく、そのまま進める",type:"motive"}
+    ]
+  },
+  {
+    cat:"動機",
+    text:"やったことのない作業を、一人で任されました。<br>あなたならどうしますか？",
+    choices:[
+      {text:"不安はあるが、言いづらくそのまま一人で進める",type:"motive"},
+      {text:"頼れる人がいないので、そのまま一人で進める",type:"opportunity"},
+      {text:"少し見ればできると思い、そのまま進める",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"機会",
+    text:"作業中に製品へ軽くぶつかってしまいましたが、見た目では異常はなさそうです。<br>あなたならどうしますか？",
+    choices:[
+      {text:"本当は報告した方がよいと思うが、言いづらくそのままにする",type:"motive"},
+      {text:"気づかれにくそうなので、そのままにする",type:"opportunity"},
+      {text:"見た感じ問題なさそうなので、そのままにする",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"機会",
+    text:"他の人が製品に軽くぶつかったあと、そのまま作業を続けているのを見ました。<br>あなたならどうしますか？",
+    choices:[
+      {text:"気になるが、言いづらく何もしない",type:"motive"},
+      {text:"自分には関係ないので、そのままにする",type:"opportunity"},
+      {text:"本人が必要なら対応するだろうと思う",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"機会",
+    text:"作業中に、自分しか気づかない程度の軽いけがをしました。<br>あなたならどうしますか？",
+    choices:[
+      {text:"本当は伝えた方がよいと思うが、言いづらくそのままにする",type:"motive"},
+      {text:"作業は続けられるので、そのまま続ける",type:"opportunity"},
+      {text:"大したことはないと思い、特に何もしない",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"動機",
+    text:"一緒に作業している人が軽いけがをしましたが、本人は気にしていない様子です。<br>あなたならどうしますか？",
+    choices:[
+      {text:"気になるが、言いづらく何もしない",type:"motive"},
+      {text:"自分が動かなくても問題ないと思い、そのままにする",type:"opportunity"},
+      {text:"本人が大丈夫そうなら問題ないと思う",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"機会",
+    text:"確認した方がよいと分かっているものの、このままでも作業は進められそうです。<br>あなたならどうしますか？",
+    choices:[
+      {text:"急いでいるので、そのまま省略して進める",type:"motive"},
+      {text:"確認しなくても進められる状況なので、省略する",type:"opportunity"},
+      {text:"この程度なら問題ないと思い、省略する",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"正当化",
+    text:"チェック作業を途中まで進めたところで、一度中断しました。<br>あなたならどこから再開しますか？",
+    choices:[
+      {text:"時間を優先して、続きからそのまま再開する",type:"motive"},
+      {text:"中断しても進められる状況なので、そのまま再開する",type:"opportunity"},
+      {text:"自分の記憶を頼りに、続きから再開する",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"機会",
+    text:"普段やっている作業に、明確なルールや手順がありません。<br>あなたならどうしますか？",
+    choices:[
+      {text:"必要だと思うが、言い出しにくくそのままにする",type:"motive"},
+      {text:"ルールがなくても回っているので、そのままにする",type:"opportunity"},
+      {text:"周囲と同じやり方なら問題ないと思う",type:"rationalization"}
+    ]
+  },
+  {
+    cat:"機会",
+    text:"作業中に小さな異常に気づきましたが、大きな問題には見えません。<br>あなたならどうしますか？",
+    choices:[
+      {text:"気になるが、報告しづらくそのままにする",type:"motive"},
+      {text:"見つかりにくそうなので、そのままにする",type:"opportunity"},
+      {text:"大したことではないと思い、そのままにする",type:"rationalization"}
+    ]
+  }
 ];
 
 let i=0,m=0,o=0,r=0,answers=[];
 
 function start(){
+  const dept = document.getElementById('dept').value;
+  if(!dept){
+    alert('部署を選択してください');
+    return;
+  }
   document.getElementById('startBtn').disabled = true;
   document.getElementById('startCard').style.display='none';
   document.getElementById('quiz').style.display='block';
@@ -228,15 +312,15 @@ function show(){
   let html=`<div class='quiz-head'><div class='quiz-index'>Q${i+1} / ${questions.length}</div></div>`;
   html+=`<div class='progress'><div class='progress-fill' style='width:${p}%'></div></div>`;
   html+=`<h2 class='question-title'>${q.text}</h2>`;
-  html+=`<p class='question-sub'>選択する回答は正解がありません。<br>
-不正するなら、どの不正か、最も自分の行動に近いものを直感で選んでください。</p>`;
+  html+=`<p class='question-sub'>選択する回答は正解がありません。<br><strong>追い込まれた状況で・・・</strong><br>
+          不正するなら、どの不正か、最も自分の行動に近いものを直感で選んでください。</p>`;
   q.choices.forEach(c=>{
-    html+=`<div class='choice' onclick="ans('${c.type}',${c.w},'${c.text.replace(/'/g, "\'")}')">${c.text}</div>`;
+    html+=`<div class='choice' onclick="ans('${c.type}','${c.text.replace(/'/g, "\\'")}')">${c.text}</div>`;
   });
   document.getElementById('quiz').innerHTML=html;
 }
 
-function ans(type,w,text){
+function ans(type,text){
   answers.push({q:i+1,answer:text,type});
   if(type==='motive')m+=1;
   if(type==='opportunity')o+=1;
@@ -304,11 +388,15 @@ function finish(){
   let catchCopy='';
   let detail='';
 
-  if(m>=o && m>=r){
+  if((m===o && m>r) || (m===r && m>o) || (o===r && o>m) || (m===o && o===r)){
+    strongest='バランス';
+    catchCopy='状況影響型';
+    detail='特定の一つの傾向に偏るというより、その場の人・環境・思い込みの影響を幅広く受けやすいタイプです。場面ごとに判断の軸が変わりやすく、対応に一貫性が出にくい傾向があります。';
+  } else if(m>o && m>r){
     strongest='動機';
     catchCopy='流されやすい判断タイプ';
     detail='周囲の空気や人間関係を優先しやすく、本来確認すべき場面でもその場の流れに合わせて判断してしまう傾向があります。';
-  } else if(o>=m && o>=r){
+  } else if(o>m && o>r){
     strongest='機会';
     catchCopy='環境依存タイプ';
     detail='時間不足や確認漏れ、ルールの曖昧さなど、環境に隙があると判断が緩みやすい傾向があります。';
@@ -320,43 +408,71 @@ function finish(){
 
   const totalQuestions = questions.length;
 
+  const detailText =
+    strongest === 'バランス'
+      ? 'あなたは、相手・状況・環境によって判断の根拠が変わりやすい傾向があります。極端な偏りはない一方で、場面によって動機・機会・正当化のどれにも寄り得るため、判断基準を自分の中で明確に持つことが大切です。'
+      : strongest === '動機'
+      ? 'あなたは「間違っているかもしれない」と感じても、その場の人間関係や圧力を優先してしまう可能性があります。特に、上司や先輩が関わる場面では、違和感があっても止めづらくなることがあります。'
+      : strongest === '機会'
+      ? 'あなたは「確認不足でも進められてしまう」「ルールが曖昧でも作業できてしまう」といった環境要因の影響を受けやすい傾向があります。仕組みの隙が判断の甘さにつながりやすいタイプです。'
+      : 'あなたは「過去に問題がなかった」「このくらいは大丈夫」という感覚で、自分の判断を補強しやすい傾向があります。慣れや経験が強みになる一方で、確認不足の温床になることがあります。';
+
+  const riskItems =
+    strongest === 'バランス'
+      ? [
+          '場面ごとに判断基準が変わり、対応がブレやすい',
+          '人・環境・思い込みのどれにも影響を受けやすい',
+          '一見柔軟だが、再現性の低い対応になりやすい'
+        ]
+      : [
+          '違和感があっても、その場の流れを優先してしまう',
+          '「いつもこうしている」を理由に確認を省略してしまう',
+          '軽微だと判断して報告や記録を後回しにしてしまう'
+        ];
+
+  const actionItems =
+    strongest === 'バランス'
+      ? [
+          '判断基準を「迷ったら確認」に固定する',
+          '相手や状況ではなく、手順・ルールを優先する癖をつける',
+          '場面ごとに対応を変えず、同じ基準で判断する',
+          '迷いが出た場面を振り返り、自分のクセを言語化する'
+        ]
+      : [
+          '迷ったときは、まず一度止めて確認する',
+          '口頭の慣習より、手順書や記録を優先する',
+          '例外対応はその場で終わらせず、共有・標準化する',
+          '小さな違和感でも、報告や相談につなげる'
+        ];
+
+  const nextPoint =
+    strongest === 'バランス'
+      ? 'この結果は、良い・悪いを決めるものではありません。バランスタイプは一見偏りが少なく見えますが、そのぶん場面によって判断軸が変わりやすい可能性があります。毎回同じ基準で判断できる状態を目指すことが重要です。'
+      : 'この結果は、良い・悪いを決めるものではありません。今の自分がどこで判断を崩しやすいかを知り、次の行動を変えるためのヒントです。特にスコアが高かった要素は、現場でのミスや見落としの起点になりやすいため、意識的に対策することで再発防止につながります。';
+
   document.getElementById('result').style.display='block';
   document.getElementById('result').innerHTML=`
     <div class='result-wrap'>
       <div class='result-hero'>
         <div class='badge'>診断結果</div>
         <h2 class='result-title'>あなたは「${strongest}タイプ」です</h2>
-        
-        <p class='result-copy'><b>${catchCopy}</b>。${detail} </p>
+        <p class='result-copy'><b>${catchCopy}</b>。${detail}</p>
         <div class='chart-wrap'><canvas id='radar' width='320' height='320'></canvas></div>
       </div>
 
       <div class='card'>
         <h3 class='section-title'>■ あなたの傾向の詳細</h3>
-        <p class='small'>
-        ${strongest === '動機' ? 'あなたは「間違っているかもしれない」と感じても、その場の人間関係や圧力を優先してしまう可能性があります。特に、上司や先輩が関わる場面では、違和感があっても止めづらくなることがあります。' : ''}
-        ${strongest === '機会' ? 'あなたは「確認不足でも進められてしまう」「ルールが曖昧でも作業できてしまう」といった環境要因の影響を受けやすい傾向があります。仕組みの隙が判断の甘さにつながりやすいタイプです。' : ''}
-        ${strongest === '正当化' ? 'あなたは「過去に問題がなかった」「このくらいは大丈夫」という感覚で、自分の判断を補強しやすい傾向があります。慣れや経験が強みになる一方で、確認不足の温床になることがあります。' : ''}
-        </p>
+        <p class='small'>${detailText}</p>
       </div>
 
       <div class='card'>
         <h3 class='section-title'>■ よくあるリスクパターン</h3>
-        <ul class='bullets'>
-          <li>違和感があっても、その場の流れを優先してしまう</li>
-          <li>「いつもこうしている」を理由に確認を省略してしまう</li>
-          <li>軽微だと判断して報告や記録を後回しにしてしまう</li>
-        </ul>
+        <ul class='bullets'>${riskItems.map(item => `<li>${item}</li>`).join('')}</ul>
       </div>
 
       <div class='card'>
         <h3 class='section-title'>■ 改善アクション（具体）</h3>
-        <ul class='bullets'>
-          <li>迷ったときは、まず一度止めて確認する</li>
-          <li>口頭の慣習より、手順書や記録を優先する</li>
-          <li>例外対応はその場で終わらせず、共有・標準化する</li>
-          <li>小さな違和感でも、報告や相談につなげる</li>
-        </ul>
+        <ul class='bullets'>${actionItems.map(item => `<li>${item}</li>`).join('')}</ul>
       </div>
 
       <div class='grid'>
@@ -379,8 +495,7 @@ function finish(){
 
       <div class='card'>
         <h3 class='section-title'>■ 次に活かすポイント</h3>
-        <p class='small'>この結果は、良い・悪いを決めるものではありません。今の自分がどこで判断を崩しやすいかを知り、次の行動を変えるためのヒントです。特にスコアが高かった要素は、現場でのミスや見落としの起点になりやすいため、意識的に対策することで再発防止につながります。</p>
-        
+        <p class='small'>${nextPoint}</p>
       </div>
     </div>`;
 
@@ -389,7 +504,6 @@ function finish(){
   fetch(GAS_WEB_APP_URL, {
     method:'POST',
     body:JSON.stringify({
-      name:document.getElementById('name').value || '未入力',
       dept:document.getElementById('dept').value || '未入力',
       motive:m,
       opportunity:o,
